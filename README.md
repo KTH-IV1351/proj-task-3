@@ -1,2 +1,3 @@
 # Project Task 3
-Some sql statements to help with project task 3
+This repo contains scripts to create the employee database used for examples in 'tips and tricks for project task 3' 
+
