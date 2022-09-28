@@ -17,15 +17,20 @@ WITH ceo AS (
     FROM employee
     WHERE managers_employee_id IS NULL
 ), dep AS (
-    SELECT MAX(department_id) as max_dep_id
+    SELECT ROW_NUMBER() OVER (ORDER BY department_id) AS dep_no, department_id AS dep_id
     FROM department
 )
 INSERT INTO employee (id, name, department_id, managers_employee_id) VALUES
-    ('XFS925542235', 'Shaine Morgan',  (SELECT max_dep_id FROM dep), (SELECT ceo_id FROM ceo)),
-    ('JNJ633640389', 'Chaney Horne',   (SELECT max_dep_id FROM dep) - 1, (SELECT ceo_id FROM ceo)),
-    ('YXW307850738', 'Kibo Morton',    (SELECT max_dep_id FROM dep) - 2, (SELECT ceo_id FROM ceo)),
-    ('HTU075956647', 'Mannix Beasley', (SELECT max_dep_id FROM dep) - 3, (SELECT ceo_id FROM ceo)),
-    ('KCE895573493', 'Katelyn Love',   (SELECT max_dep_id FROM dep) - 4, (SELECT ceo_id FROM ceo));
+    ('XFS925542235', 'Shaine Morgan',  (SELECT dep_id FROM dep WHERE dep_no = 1),
+      (SELECT ceo_id FROM ceo)),
+    ('JNJ633640389', 'Chaney Horne',   (SELECT dep_id FROM dep WHERE dep_no = 2),
+      (SELECT ceo_id FROM ceo)),
+    ('YXW307850738', 'Kibo Morton',    (SELECT dep_id FROM dep WHERE dep_no = 3),
+      (SELECT ceo_id FROM ceo)),
+    ('HTU075956647', 'Mannix Beasley', (SELECT dep_id FROM dep WHERE dep_no = 4),
+      (SELECT ceo_id FROM ceo)),
+    ('KCE895573493', 'Katelyn Love',   (SELECT dep_id FROM dep WHERE dep_no = 5),
+      (SELECT ceo_id FROM ceo));
 
 -- All employees except managers
 WITH dep1 AS (
@@ -599,22 +604,18 @@ WITH ceo_role AS (
     FROM employee
     WHERE managers_employee_id IS NULL
 ), dep_mgr AS (
-    SELECT MAX(employee_id) as max_dep_mgr_id
+    SELECT ROW_NUMBER() OVER (ORDER BY employee_id) AS mgr_no, employee_id AS dep_mgr_id
     FROM employee
     WHERE managers_employee_id = (SELECT ceo FROM ceo)
-), role AS (
-    SELECT MAX(role_id) as max_role_id
-    FROM role
 )
 INSERT INTO employee_role (employee_id, role_id)
 VALUES
   ((SELECT ceo FROM ceo), (SELECT ceo FROM ceo_role)),
-  ((SELECT max_dep_mgr_id FROM dep_mgr), (SELECT dep_mgr FROM dep_mgr_role)),
-  ((SELECT max_dep_mgr_id - 1 FROM dep_mgr), (SELECT dep_mgr FROM dep_mgr_role)),
-  ((SELECT max_dep_mgr_id - 2 FROM dep_mgr), (SELECT dep_mgr FROM dep_mgr_role)),
-  ((SELECT max_dep_mgr_id - 3 FROM dep_mgr), (SELECT dep_mgr FROM dep_mgr_role)),
-  ((SELECT max_dep_mgr_id - 4 FROM dep_mgr), (SELECT dep_mgr FROM dep_mgr_role));
-  
+  ((SELECT dep_mgr_id FROM dep_mgr WHERE mgr_no = 1), (SELECT dep_mgr FROM dep_mgr_role)),
+  ((SELECT dep_mgr_id FROM dep_mgr WHERE mgr_no = 2), (SELECT dep_mgr FROM dep_mgr_role)),
+  ((SELECT dep_mgr_id FROM dep_mgr WHERE mgr_no = 3), (SELECT dep_mgr FROM dep_mgr_role)),
+  ((SELECT dep_mgr_id FROM dep_mgr WHERE mgr_no = 4), (SELECT dep_mgr FROM dep_mgr_role)),
+  ((SELECT dep_mgr_id FROM dep_mgr WHERE mgr_no = 5), (SELECT dep_mgr FROM dep_mgr_role));
 
 -- The role-to-employee bindings for employees who aren't managers
 CREATE VIEW non_mgr_role AS (
