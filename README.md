@@ -4,15 +4,11 @@ This repo contains SQL scripts to create the employee database used for the exam
 
 ## How to Create the Database
 
-First run the script `employee-db.sql`, which creates the database schema. Note that the database itself isn't created, it must be created manually before running this script.
+Follow the steps below to create the database and insert data.
 
-Next, run the scripts inserting data. The difficulty is that
-1. Execute `dep-data.sql`, which will insert all departments data into the `department` table.
-1. Execute `ceo-data.sql`, which will insert the CEO into the `employee` table.
-1. Run the query `select employee_id from employee` to see the employee_id of the newly inserted CEO.
-1. Edit the file `manager-data.sql` and set the last value on all rows, `managers_employee_id` to the employee id of the CEO.
-1. Run the file `manager-data.sql` to insert all managers (except the CEO) into the `employee` table.
-1. Run the query `select department_id,employee_id from employee where managers_employee_id is not null`. This will produce a result showing the department id and employee id for all managers except the CEO. 
-1. Edit the file `employee-data.sql` and set the last value on all rows to the employee of the correct manager. The correct manager is the manager working at the same department as the employee.
-1. Run the file `employee-data.sql` to insert all employees except managers into the `employee` table.
-1. 
+1. Create an empty database, this isn't done by the scripts.
+1. Run the script `create-emp-db.sql` against the database created above. This creates the database schema.
+1. Run the script `fill-emp-db.sql` against the database used above, which will insert data. Note that there is some amount of randomness in this script, some foreign keys will get different values each time the script is executed.
+
+As an alternative to the steps above, use the script `empdb-from-pg_dump.sql` which creates the empty database, the schema, and also inserts data. This script has been generated with `pg_dump`, and when executed will create a database with exactly the same state as when the script was generated.
+
