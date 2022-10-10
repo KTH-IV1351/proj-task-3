@@ -10,5 +10,5 @@ Follow the steps below to create the database and insert data.
 1. Run the script `create-emp-db.sql` against the database created above. This creates the database schema.
 1. Run the script `fill-emp-db.sql` against the database used above, which will insert data. Note that there is some amount of randomness in this script, some foreign keys will get different values each time the script is executed.
 
-As an alternative to the steps above, use the script `empdb-from-pg_dump.sql` which creates the empty database, the schema, and also inserts data. This script has been generated with `pg_dump`, and when executed will create a database with exactly the same state as when the script was generated.
+As an alternative to the steps above, use the script `empdb-from-pg_dump.sql` which creates the empty database, the schema, and also inserts data. This script has been generated with `pg_dump`, and when executed (for example with ) will create a database with exactly the same state as when the script was generated.
 
