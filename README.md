@@ -12,3 +12,6 @@ Follow the steps below to create the database and insert data.
 
 As an alternative to the steps above, use the script `empdb-from-pg_dump.sql` which creates the empty database, the schema, and also inserts data. This script has been generated with `pg_dump`, and when executed will create a database with exactly the same state as when the script was generated.
 
+## The queries listed in `tips and tricks for project task 3`
+
+The file `queries.sql` contains all queries listed in the document `tips and tricks for project task 3`.
