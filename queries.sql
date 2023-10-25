@@ -88,7 +88,8 @@ EXPLAIN SELECT phone.id AS phone_id, laptop.id AS laptop_id,
 FROM phone FULL JOIN laptop ON laptop.id = phone.id 
 LEFT JOIN employee 
     ON laptop.employee_id = employee.employee_id 
-        OR phone.employee_id = employee.employee_id;
+        OR phone.employee_id = employee.employee_id
+WHERE employee.department_id = 2 or laptop.department_id = 2;
 
 -- Listing 11
 SELECT name FROM employee e 
